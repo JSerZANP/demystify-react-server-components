@@ -92,7 +92,7 @@ async function buildForClient() {
           <div>Below is a  React app that:<br>
           <ol>
           <li>has all components bundled in one</li>
-          <li>fetchs data through API and does client-side rendering</li>
+          <li>fetches data through API and does client-side rendering</li>
           <li>parses markdown on client by <a href="https://www.npmjs.com/package/marked">marked</a></li>
           <li>shows loading indicator by Suspense</li>
           </ol>
