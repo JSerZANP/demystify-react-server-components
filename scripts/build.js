@@ -119,23 +119,16 @@ async function buildForClient() {
           </head>
           <body>
           <div class="desc">
-          <h1>Support nested Server Components & Suspense - Ep5 of <a href="https://github.com/JSerZANP/demystify-react-server-components">Demystify React Server Components</a></h1>
-          <div>So far we couldn't move page-level components \`List\` & \`Detail\` to Server Components because <br>
-          <ol>
-          <li> they have nested Server Components, but we only render one level in our code</li>
-          <li> they have Suspense</li>
-          </ol>
+          <h1>Render Server Components and stream down response - Ep6 of <a href="https://github.com/JSerZANP/demystify-react-server-components">Demystify React Server Components</a></h1>
+          <div>in Ep5, we briefly mentioned the waterfall issue - we fetch /render multiple times for nested server components.<br>
+
+          In this episode we improved this by streaming - progressively send down the already rendered chunks of server components.<br>
           
-          Let's tweak the code a little bit so that <br>
-          <ol>
-          <li> nested Server Components can be supported (not directly rendered though, we only send down their client part and they will be rendered by another request. This creates a waterfall)</li>
-          <li>Suspense is supported: this could be easily done because Suspense is built-in component</li>
-          </ol>
+          <p>The code is not complex actually, with previous episodes it is pretty natural to come this far. Open the Chrome Dev console to see that there is only 1 /render call for each page navigation.</p>
           
-          With this new demo, we can see the Suspenses be rendered. <br>
+           <p>This is the last episode of this mini series! Hope it somewhat helps.<br>
           
-          We don't want the /render to be called multiple times though, with what we've learnt from <a href="https://jser.dev/react/2023/03/30/progressive-hydration.html">How progressive hydration works</a>, we can try stream down the responses in one request, let's give it a try in following episode<br>
-          
+          Again this is of course not official implementation, I'm learning on the way as well.</p>
           </div>
           <div id="root"></div>
             ${scripts}

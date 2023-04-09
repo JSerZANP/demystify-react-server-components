@@ -112,7 +112,7 @@ export default function renderServerComponentToStream(jsx, res) {
   };
 
   const pipe = (json) => {
-    res.write(serialize(json));
+    res.write(serialize(json) + "\n");
     if (context.tasks.size === 0) {
       res.end();
     }

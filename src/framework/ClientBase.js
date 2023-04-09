@@ -55,15 +55,22 @@ function useStreamedData(component, props) {
           }
 
           const decoder = new TextDecoder();
-          const payload = deserialize(decoder.decode(value));
-          if (payload.target === "base") {
-            temp = payload.data;
-            setState(temp);
-          } else if (typeof payload.target === "string") {
-            // if we get a chunk with a target id, that means
-            // we need to put the chunk at where the id is
-            temp = replaceTarget(temp, payload.target, payload.data);
-            setState(temp);
+          const text = decoder.decode(value);
+          const chunks = text
+            .split("\n")
+            .map((chunk) => chunk.trim())
+            .filter(Boolean);
+          for (const chunk of chunks) {
+            const payload = deserialize(chunk);
+            if (payload.target === "base") {
+              temp = payload.data;
+              setState(temp);
+            } else if (typeof payload.target === "string") {
+              // if we get a chunk with a target id, that means
+              // we need to put the chunk at where the id is
+              temp = replaceTarget(temp, payload.target, payload.data);
+              setState(temp);
+            }
           }
           console.log("[received]", payload.data);
           read();
