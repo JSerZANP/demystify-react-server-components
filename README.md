@@ -14,6 +14,6 @@ You can:
 1. clone the repo and check out at target commit > `npm start` and there you go.
 2. or just click the stackblitz link in table below.
 
-| episode | pr                                                                         | commit | blog | stackblitz |
-| ------- | -------------------------------------------------------------------------- | ------ | ---- | ---------- |
-| 1       | [pr](https://github.com/JSerZANP/demystify-react-server-components/pull/1) |
+| episode | pr                                                                         | commit                                     | blog | stackblitz                                                                                                                                                                     |
+| ------- | -------------------------------------------------------------------------- | ------------------------------------------ | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1       | [pr](https://github.com/JSerZANP/demystify-react-server-components/pull/1) | `45dd1bb13237056e7c0bad698fa569e06ab6bdad` | TODO | [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](JSerZANP/demystify-react-server-components/tree/45dd1bb13237056e7c0bad698fa569e06ab6bdad) |
