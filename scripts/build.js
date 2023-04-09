@@ -93,11 +93,11 @@ async function buildForClient() {
           <ol>
           <li>manually split PostDetail into PostDetail.client & PostDetail.server</li>
           <li>PostDetail.client just pass down the props and query response from /render</li>
-          <li>/render will render PostDeail.server into JSON and send it back</li>
+          <li>/render will render PostDetail.server into JSON and send it back</li>
           <li>PostDetail.client renders the response</li>
           </ol>
 
-          By above step, we have a rough Server Component working for us(We do the same for PostDetail as well), we managed to 
+          By above steps, we have a rough Server Component working for us(We do the same for PostDetail as well), we managed to 
           <ol>
           <li>move markdown related dependencies to server</li>
           <li>remove data API endpoints</li>
@@ -105,7 +105,7 @@ async function buildForClient() {
           
           <p>Sounds good! But it doesn't support nested components though, we cannot do the same to PostList, we'll try to fix this in next episode.</p>
 
-          <p>Below is the improved app, open Network tab from Chrome Dev Console to see the requests</p>
+          <p>Here is the improve app, open Network tab from Chrome Dev Console to see the requests of /render.</p>
 
           </div>
           <div id="root"></div>
