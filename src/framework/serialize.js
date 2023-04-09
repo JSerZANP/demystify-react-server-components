@@ -25,6 +25,8 @@ function replaceClientComponent(data) {
 
   // if it is client component
   // switch it to LazyContainer
+  // we assume all function components are client components, which clearly is not true
+  // TODO: fix this
   if (
     data.$$typeof === Symbol.for("react.element") &&
     typeof data.type === "function"
