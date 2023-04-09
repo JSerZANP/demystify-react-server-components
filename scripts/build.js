@@ -173,9 +173,6 @@ async function start() {
 
   // for server build, just transpile it again as a quick fix
   transpile();
-
-  // genreate a component map so that on server we can easily tell if a component is client component
-  await generateComponentMap();
 }
 
 start();
@@ -270,23 +267,4 @@ async function readAllComponents() {
     serverComponents,
     clientComponents,
   };
-}
-
-async function generateComponentMap() {
-  const { serverComponents, clientComponents } = await readAllComponents();
-
-  // TODO: the client components from framework should be built
-  writeFileSync(
-    dir_built + "/utils/componentMap.js",
-    `
-module.exports =  {
-  serverComponents: [${serverComponents
-    .map((file) => `"${file.fileName.split(".")[0]}"`)
-    .join(",")}],
-  clientComponents: [${clientComponents
-    .map((file) => `"${file.fileName.split(".")[0]}"`)
-    .join(",")},  "Link", "LazyContainer"],
-}
-    `
-  );
 }
