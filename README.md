@@ -12,4 +12,4 @@ I'll build the React Server Component demo from scratch with a few milestones to
 You can:
 
 1. clone the repo and check out at target commit > `npm start` and there you go.
-2. or just click the stackblitz link in below table.
+2. or just click the stackblitz link in table below.
