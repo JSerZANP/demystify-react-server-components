@@ -92,25 +92,19 @@ async function buildForClient() {
           </head>
           <body>
           <div class="desc">
-          <h1>Manually split component into client part & server part - Ep2 of <a href="https://github.com/JSerZANP/demystify-react-server-components">Demystify React Server Components</a></h1>
-          <div>To address the issues from <a href="https://github.com/JSerZANP/demystify-react-server-components/pull/1">Ep1</a>, we'll do following:<br>
+          <h1>Render Client Components in Server Components - Ep3 of <a href="https://github.com/JSerZANP/demystify-react-server-components">Demystify React Server Components</a></h1>
+          <div>We couldn't move PostList to server as we did in ep2 because it renders <Link/> and <Link/> needs DOM api which means it must be a Client Component.<br>
+          In this episode, we do following to address this issue
+
           <ol>
-          <li>manually split PostDetail into PostDetail.client & PostDetail.server</li>
-          <li>PostDetail.client just pass down the props and query response from /render</li>
-          <li>/render will render PostDetail.server into JSON and send it back</li>
-          <li>PostDetail.client renders the response</li>
+          <li>when rendering Server Component, we replace Client Components with "LazyContainer"  </li>
+          <li>"LazyContainer" will be replaced with working client component -LazyContainer on client</li>
+          <li>LazyContainer lazy loads the actual component (Link in our case) and renders</li>
           </ol>
 
-          By above steps, we have a rough Server Component working for us(We do the same for PostDetail as well), we managed to 
-          <ol>
-          <li>move markdown related dependencies to server</li>
-          <li>remove data API endpoints</li>
-          </ol>
+          With this we are able to move PostList to a Server Component, Hooray! Check the app below to see the lazily loaded js resources.
           
-          <p>Sounds good! But it doesn't support nested components though, we cannot do the same to PostList, we'll try to fix this in next episode.</p>
-
-          <p>Here is the improve app, open Network tab from Chrome Dev Console to see the requests of /render.</p>
-
+          <p>But it is even more tedious now, how can we make it less painful?</p>
           </div>
           <div id="root"></div>
             ${scripts}

@@ -7,7 +7,7 @@ export default async function PostList() {
   return (
     <ol>
       {list.map((post) => (
-        <li>
+        <li key={post.permalink}>
           <Link href={`/post/${post.permalink}`}>{post.title}</Link>
         </li>
       ))}
