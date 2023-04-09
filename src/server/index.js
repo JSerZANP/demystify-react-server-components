@@ -2,7 +2,6 @@ import bodyParser from "body-parser";
 import express from "express";
 import path from "path";
 import serialize from "../framework/serialize";
-import getPosts from "./posts";
 
 const app = express();
 const port = 3000;
@@ -11,12 +10,6 @@ app.use(bodyParser.json());
 
 // serve static files under public/
 app.use("/static", express.static(path.join(__dirname, "../../public")));
-
-// API exposed for client-side use
-app.get("/api/posts", async (req, res) => {
-  const list = await getPosts();
-  res.json(list);
-});
 
 app.post("/render", async (req, res) => {
   const { component, props } = req.body;
