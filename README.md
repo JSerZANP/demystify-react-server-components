@@ -13,3 +13,7 @@ You can:
 
 1. clone the repo and check out at target commit > `npm start` and there you go.
 2. or just click the stackblitz link in table below.
+
+| episode | pr                                                                         | commit | blog | stackblitz |
+| ------- | -------------------------------------------------------------------------- | ------ | ---- | ---------- |
+| 1       | [pr](https://github.com/JSerZANP/demystify-react-server-components/pull/1) |
