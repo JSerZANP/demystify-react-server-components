@@ -15,7 +15,6 @@ const createPostFetcher = function (permalink) {
           },
         };
 
-        // pa
         this.promise = fetch("/render", {
           body: JSON.stringify(payload),
           method: "POST",

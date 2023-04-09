@@ -88,21 +88,25 @@ async function buildForClient() {
           </head>
           <body>
           <div class="desc">
-          <h1>Issues of client-side rendering - Ep1 of <a href="https://github.com/JSerZANP/demystify-react-server-components">Demystify React Server Components</a></h1>
-          <div>Below is a  React app that:<br>
+          <h1>Manually split component into client part & server part - Ep2 of <a href="https://github.com/JSerZANP/demystify-react-server-components">Demystify React Server Components</a></h1>
+          <div>To address the issues from <a href="https://github.com/JSerZANP/demystify-react-server-components/pull/1">Ep1</a>, we'll do following:<br>
           <ol>
-          <li>has all components bundled in one</li>
-          <li>fetches data through API and does client-side rendering</li>
-          <li>parses markdown on client by <a href="https://www.npmjs.com/package/marked">marked</a></li>
-          <li>shows loading indicator by Suspense</li>
+          <li>manually split PostDetail into PostDetail.client & PostDetail.server</li>
+          <li>PostDetail.client just pass down the props and query response from /render</li>
+          <li>/render will render PostDeail.server into JSON and send it back</li>
+          <li>PostDetail.client renders the response</li>
           </ol>
-          This approach sounds pretty standard, it should be fine. But still there are some issues :<br/>
+
+          By above step, we have a rough Server Component working for us(We do the same for PostDetail as well), we managed to 
           <ol>
-          <li>components are all bundled together, even when not rendered on initial load</li>
-          <li>the dependency of markdown parser is too much</li>
-          <li>the API exposing is tedious</li>
+          <li>move markdown related dependencies to server</li>
+          <li>remove data API endpoints</li>
           </ol>
-          How can we improve ?
+          
+          <p>Sounds good! But it doesn't support nested components though, we cannot do the same to PostList, we'll try to fix this in next episode.</p>
+
+          <p>Below is the improved app, open Network tab from Chrome Dev Console to see the requests</p>
+
           </div>
           <div id="root"></div>
             ${scripts}

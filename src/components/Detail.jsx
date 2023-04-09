@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import Link from "../framework/Link";
 
-import PostDetail from "./PostDetail";
+import PostDetail from "./PostDetail.client";
 import Like from "./Like";
 
 export default function Detail({ permalink }) {

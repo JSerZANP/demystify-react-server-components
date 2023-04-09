@@ -1,6 +1,6 @@
 import React from "react";
 import { marked } from "marked";
-import { getPosts } from "../server/posts";
+import getPosts from "../server/posts";
 
 export default async function PostView({ permalink }) {
   const list = await getPosts();
