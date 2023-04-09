@@ -15,7 +15,7 @@ app.post("/render", async (req, res) => {
   const { component, props } = req.body;
   const Component = require(path.join(
     __dirname,
-    "../components/" + component + ".server.js"
+    "../components/" + component + ".js"
   )).default;
 
   // assume all server components are async for now

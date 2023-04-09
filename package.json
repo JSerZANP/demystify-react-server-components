@@ -16,7 +16,8 @@
     "rollup-plugin-replace": "^2.2.0"
   },
   "scripts": {
-    "start": "node scripts/build.js && node built/server/index.js"
+    "start": "node scripts/build.js && node built/server/index.js",
+    "build": "node scripts/build.js"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",

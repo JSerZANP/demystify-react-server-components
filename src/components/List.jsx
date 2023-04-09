@@ -1,5 +1,6 @@
+"use client";
 import React, { Suspense } from "react";
-import PostList from "./PostList.client";
+import PostList from "./PostList";
 
 export default function List() {
   return (

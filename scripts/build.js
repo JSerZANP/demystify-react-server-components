@@ -10,6 +10,8 @@ const path = require("path");
 const dir_src = path.resolve(__dirname + "/../src/");
 const dir_built = path.resolve(__dirname + "/../built/");
 const dir_public = path.resolve(__dirname + "/../public/");
+const dir_components_src = path.resolve(__dirname + "/../src/components/");
+const dir_components_built = path.resolve(__dirname + "/../built/components/");
 
 /**
  * transpile the files, handling JSX
@@ -35,11 +37,36 @@ function transpile() {
  * built/ -> public/
  */
 async function buildForClient() {
+  const { serverComponents, clientComponents } = await readAllComponents();
+  // for server component A.js, we create a client side version A.js
+  // using the same name to bundle
+  for (const file of serverComponents) {
+    const componentName = file.fileName.split(".")[0];
+
+    const clientCode = `
+     import React from 'react';
+     import ClientBase from '../framework/ClientBase';
+     
+     export default function ${componentName}(props) {
+       return <ClientBase component="${componentName}" {...props}/>
+     }
+     `;
+
+    writeFileSync(
+      dir_components_built + "/" + componentName + ".js",
+      babel.transformSync(clientCode).code
+    );
+  }
+
   const bundle = await rollup({
     input: [
       dir_built + "/Root.js",
       dir_built + "/framework/LazyContainer.js",
       dir_built + "/framework/Link.js",
+      ...[...serverComponents, ...clientComponents].map(
+        (component) =>
+          dir_built + "/components/" + component.fileName.split(".")[0] + ".js"
+      ),
     ],
     plugins: [
       replace({ "process.env.NODE_ENV": JSON.stringify("production") }),
@@ -140,8 +167,15 @@ async function start() {
   // first transpile JSX syntax
   transpile();
 
-  // build the static resources
+  // for a component, it could be server component or client component (default server component)
+  // but for server component, it also has a client version of it so that it could be uesd on client
   await buildForClient();
+
+  // for server build, just transpile it again as a quick fix
+  transpile();
+
+  // genreate a component map so that on server we can easily tell if a component is client component
+  await generateComponentMap();
 }
 
 start();
@@ -200,5 +234,59 @@ function makeHtmlAttributes(attributes) {
   return keys.reduce(
     (result, key) => (result += ` ${key}="${attributes[key]}"`),
     ""
+  );
+}
+
+async function readAllComponents() {
+  const allComponents = await new Promise((resolve, reject) => {
+    fs.readdir(dir_components_src, (err, files) => {
+      if (err == null) {
+        resolve(files);
+      } else {
+        reject(err);
+      }
+    });
+  });
+  const serverComponents = [];
+  const clientComponents = [];
+  allComponents.forEach((file) => {
+    const content = fs.readFileSync(dir_components_src + "/" + file, {
+      encoding: "utf-8",
+    });
+    if (!content.includes("use client")) {
+      serverComponents.push({
+        fileName: file,
+        content,
+      });
+    } else {
+      clientComponents.push({
+        fileName: file,
+        content,
+      });
+    }
+  });
+
+  return {
+    serverComponents,
+    clientComponents,
+  };
+}
+
+async function generateComponentMap() {
+  const { serverComponents, clientComponents } = await readAllComponents();
+
+  // TODO: the client components from framework should be built
+  writeFileSync(
+    dir_built + "/utils/componentMap.js",
+    `
+module.exports =  {
+  serverComponents: [${serverComponents
+    .map((file) => `"${file.fileName.split(".")[0]}"`)
+    .join(",")}],
+  clientComponents: [${clientComponents
+    .map((file) => `"${file.fileName.split(".")[0]}"`)
+    .join(",")},  "Link", "LazyContainer"],
+}
+    `
   );
 }

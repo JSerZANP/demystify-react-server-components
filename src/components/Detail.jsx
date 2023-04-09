@@ -1,7 +1,8 @@
+"use client";
 import React, { Suspense } from "react";
 import Link from "../framework/Link";
 
-import PostDetail from "./PostDetail.client";
+import PostDetail from "./PostDetail";
 import Like from "./Like";
 
 export default function Detail({ permalink }) {
