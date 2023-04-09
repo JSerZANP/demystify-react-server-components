@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Detail from "../components/Detail";
 import List from "../components/List";
+import { startTransition } from "react";
 
 function getRoute() {
   const path = location.pathname;
@@ -20,7 +21,7 @@ export default function Router() {
 
   useEffect(() => {
     const onChange = () => {
-      setPage(getRoute());
+      startTransition(() => setPage(getRoute()));
     };
     window.addEventListener("popstate", onChange);
     return () => {
