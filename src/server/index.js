@@ -1,6 +1,7 @@
 import bodyParser from "body-parser";
 import express from "express";
 import path from "path";
+import serialize from "../framework/serialize";
 import getPosts from "./posts";
 
 const app = express();
@@ -26,13 +27,7 @@ app.post("/render", async (req, res) => {
 
   // assume all server components are async for now
   const json = await Component(props);
-  const str = JSON.stringify(json, (k, v) => {
-    if (k === "$$typeof" && typeof v === "symbol") {
-      return v.toString();
-    }
-    return v;
-  });
-
+  const str = serialize(json);
   res.send(str);
 });
 

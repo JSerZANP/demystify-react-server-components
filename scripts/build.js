@@ -36,7 +36,11 @@ function transpile() {
  */
 async function buildForClient() {
   const bundle = await rollup({
-    input: [dir_built + "/Root.js"],
+    input: [
+      dir_built + "/Root.js",
+      dir_built + "/framework/LazyContainer.js",
+      dir_built + "/framework/Link.js",
+    ],
     plugins: [
       replace({ "process.env.NODE_ENV": JSON.stringify("production") }),
       commonjs(),

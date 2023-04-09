@@ -1,4 +1,5 @@
 import React from "react";
+import deserialize from "../framework/deserialize";
 import Link from "../framework/Link";
 
 const Posts = {
@@ -23,15 +24,7 @@ const Posts = {
       })
         .then((res) => res.text())
         .then((str) => {
-          this.data = JSON.parse(str, (key, value) => {
-            if (key === "$$typeof") {
-              if (value === "Symbol(react.element)") {
-                return Symbol.for("react.element");
-              }
-              throw new Error("unexpected $$typeof", value);
-            }
-            return value;
-          });
+          this.data = deserialize(str);
         });
     }
 
@@ -40,14 +33,5 @@ const Posts = {
 };
 
 export default function PostList() {
-  const list = Posts.fetch();
-  return (
-    <ol>
-      {list.map((post) => (
-        <li>
-          <Link href={`/post/${post.permalink}`}>{post.title}</Link>
-        </li>
-      ))}
-    </ol>
-  );
+  return Posts.fetch();
 }

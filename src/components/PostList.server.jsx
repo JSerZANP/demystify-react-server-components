@@ -1,21 +1,16 @@
-const Posts = {
-  data: null,
-  promise: null,
-  fetch() {
-    if (this.data != null) {
-      return this.data;
-    }
+import React from "react";
+import getPosts from "../server/posts";
+import Link from "../framework/Link";
 
-    if (this.promise == null) {
-      this.promise = fetch("/api/posts")
-        .then((res) => res.json())
-        .then((list) => (this.data = list));
-    }
-
-    throw this.promise;
-  },
-};
-
-export default function PostList() {
-  return Posts.fetch();
+export default async function PostList() {
+  const list = await getPosts();
+  return (
+    <ol>
+      {list.map((post) => (
+        <li>
+          <Link href={`/post/${post.permalink}`}>{post.title}</Link>
+        </li>
+      ))}
+    </ol>
+  );
 }
