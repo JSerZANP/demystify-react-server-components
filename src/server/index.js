@@ -1,8 +1,7 @@
 import bodyParser from "body-parser";
 import express from "express";
 import path from "path";
-import renderServerComponent from "../framework/renderServerComponent";
-import serialize from "../framework/serialize";
+import renderServerComponentToStream from "../framework/renderServerComponent";
 
 const app = express();
 const port = 3000;
@@ -19,10 +18,8 @@ app.post("/render", async (req, res) => {
     "../components/" + component + ".js"
   )).default;
 
-  // assume all server components are async for now
   const json = await Component(props);
-  const str = serialize(renderServerComponent(json));
-  res.send(str);
+  renderServerComponentToStream(json, res);
 });
 
 // serve built index.html

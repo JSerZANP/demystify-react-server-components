@@ -8,52 +8,95 @@
  *
  * The base handles the communication to /render
  */
+import { useEffect, useMemo, useState } from "react";
 import deserialize from "./deserialize";
 
-const createFetcher = function (component, props) {
-  return {
-    data: null,
-    promise: null,
-    fetch() {
-      if (this.data != null) {
-        return this.data;
-      }
-
-      if (this.promise == null) {
-        const payload = {
-          component,
-          props,
-        };
-
-        this.promise = fetch("/render", {
-          body: JSON.stringify(payload),
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-          .then((res) => res.text())
-          .then((str) => {
-            const data = deserialize(str);
-            this.data = data;
-          });
-      }
-
-      throw this.promise;
-    },
-  };
-};
-
-const map = new Map();
-
-const getFetcher = (component, props) => {
-  const key = JSON.stringify({ component, props });
-  if (!map.has(key)) {
-    map.set(key, createFetcher(component, props));
-  }
-  return map.get(key);
-};
-
 export default function ClientBase({ component, ...props }) {
-  return getFetcher(component, props).fetch();
+  return useStreamedData(component, props);
+}
+
+// alright, revalidating is out of our scope here.
+const cache = new Map();
+
+function useStreamedData(component, props) {
+  const payload = useMemo(
+    () => ({
+      component,
+      props,
+    }),
+    [component, props]
+  );
+  const key = useMemo(() => JSON.stringify(payload), [payload]);
+
+  const [state, setState] = useState(cache.get(key));
+  useEffect(() => {
+    if (state != null) {
+      return;
+    }
+    fetch("/render", {
+      body: key,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      const reader = res.body.getReader();
+      let temp = null;
+      const read = () => {
+        // read the data
+        reader.read().then(({ done, value }) => {
+          // Result objects contain two properties:
+          // done  - true if the stream has already given you all its data.
+          // value - some data. Always undefined when done is true.
+          if (done) {
+            console.log("[end]");
+            cache.set(key, temp);
+            return;
+          }
+
+          const decoder = new TextDecoder();
+          const payload = deserialize(decoder.decode(value));
+          if (payload.target === "base") {
+            temp = payload.data;
+            setState(temp);
+          } else if (typeof payload.target === "string") {
+            // if we get a chunk with a target id, that means
+            // we need to put the chunk at where the id is
+            temp = replaceTarget(temp, payload.target, payload.data);
+            setState(temp);
+          }
+          console.log("[received]", payload.data);
+          read();
+        });
+      };
+
+      read();
+    });
+  }, []);
+
+  return state;
+}
+
+function replaceTarget(jsx, id, data) {
+  if (jsx == null) {
+    return null;
+  }
+  if (
+    jsx?.["$$typeof"] === Symbol.for("react.element") &&
+    jsx?.props.id === id
+  ) {
+    return data;
+  }
+
+  if (Array.isArray(jsx)) {
+    return jsx.map((item) => replaceTarget(item, id, data));
+  }
+  if (typeof jsx === "object") {
+    return Object.keys(jsx).reduce((result, key) => {
+      result[key] = replaceTarget(jsx[key], id, data);
+      return result;
+    }, {});
+  }
+
+  return jsx;
 }

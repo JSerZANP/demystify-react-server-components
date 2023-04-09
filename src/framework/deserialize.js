@@ -1,4 +1,5 @@
 import LazyContainer from "./LazyContainer";
+import Placeholder from "./Placeholder";
 
 /**
  * parse server rendering response string so it could be used by React runtime
@@ -40,6 +41,14 @@ function replaceClientComponent(data) {
       ...data,
       props: replaceClientComponent(data.props),
       type: LazyContainer,
+    };
+  }
+
+  if (data.type === "$Placeholder") {
+    return {
+      ...data,
+      props: replaceClientComponent(data.props),
+      type: Placeholder,
     };
   }
 
