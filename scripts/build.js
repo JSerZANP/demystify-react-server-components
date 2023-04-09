@@ -119,20 +119,22 @@ async function buildForClient() {
           </head>
           <body>
           <div class="desc">
-          <h1>Automatically build Server Components - Ep4 of <a href="https://github.com/JSerZANP/demystify-react-server-components">Demystify React Server Components</a></h1>
-          <div>In <a href="https://github.com/JSerZANP/demystify-react-server-components/pull/3">ep3</a> we see how tedious it is to manually manage the client part of server component.<br>
-          After doing two components, we can see that the client part of server components are basically the same, it is just a loader component that communicates with /render.<br>
-So we modify the build scripts to do this for us so that
-
-
-
-
+          <h1>Support nested Server Components & Suspense - Ep5 of <a href="https://github.com/JSerZANP/demystify-react-server-components">Demystify React Server Components</a></h1>
+          <div>So far we couldn't move page-level components \`List\` & \`Detail\` to Server Components because <br>
           <ol>
-          <li>default components are Server Components, unless "use client" is declared  </li>
-          <li>no more naming of .server.js or .client.js. Now after building, client code use /public, server uses /built, components have the same name across the folders.</li>
+          <li> they have nested Server Components, but we only render one level in our code</li>
+          <li> they have Suspense</li>
           </ol>
-
-          Here is the new app, we can see it works totally the same as before but the code is much cleaner with out importing '.client' or '.server'
+          
+          Let's tweak the code a little bit so that <br>
+          <ol>
+          <li> nested Server Components can be supported (not directly rendered though, we only send down their client part and they will be rendered by another request. This creates a waterfall)</li>
+          <li>Suspense is supported: this could be easily done because Suspense is built-in component</li>
+          </ol>
+          
+          With this new demo, we can see the Suspenses be rendered. <br>
+          
+          We don't want the /render to be called multiple times though, with what we've learnt from [How progressive hydration works](https://jser.dev/react/2023/03/30/progressive-hydration.html), we can try stream down the responses in one request, let's give it a try in following episode<br>
           
           </div>
           <div id="root"></div>
