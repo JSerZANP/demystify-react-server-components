@@ -13,6 +13,11 @@ export default function deserialize(str) {
       }
       throw new Error("unexpected $$typeof", value);
     }
+
+    if (key === "type" && value === "Symbol(react.suspense)") {
+      return Symbol.for("react.suspense");
+    }
+
     return value;
   });
   const result = replaceClientComponent(data);

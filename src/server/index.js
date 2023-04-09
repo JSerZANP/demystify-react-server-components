@@ -1,6 +1,7 @@
 import bodyParser from "body-parser";
 import express from "express";
 import path from "path";
+import renderServerComponent from "../framework/renderServerComponent";
 import serialize from "../framework/serialize";
 
 const app = express();
@@ -20,7 +21,7 @@ app.post("/render", async (req, res) => {
 
   // assume all server components are async for now
   const json = await Component(props);
-  const str = serialize(json);
+  const str = serialize(renderServerComponent(json));
   res.send(str);
 });
 
