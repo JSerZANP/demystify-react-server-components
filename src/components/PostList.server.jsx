@@ -1,6 +1,3 @@
-import React from "react";
-import Link from "../framework/Link";
-
 const Posts = {
   data: null,
   promise: null,
@@ -20,14 +17,5 @@ const Posts = {
 };
 
 export default function PostList() {
-  const list = Posts.fetch();
-  return (
-    <ol>
-      {list.map((post) => (
-        <li>
-          <Link href={`/post/${post.permalink}`}>{post.title}</Link>
-        </li>
-      ))}
-    </ol>
-  );
+  return Posts.fetch();
 }
