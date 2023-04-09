@@ -134,7 +134,7 @@ async function buildForClient() {
           
           With this new demo, we can see the Suspenses be rendered. <br>
           
-          We don't want the /render to be called multiple times though, with what we've learnt from [How progressive hydration works](https://jser.dev/react/2023/03/30/progressive-hydration.html), we can try stream down the responses in one request, let's give it a try in following episode<br>
+          We don't want the /render to be called multiple times though, with what we've learnt from <a href="https://jser.dev/react/2023/03/30/progressive-hydration.html">How progressive hydration works</a>, we can try stream down the responses in one request, let's give it a try in following episode<br>
           
           </div>
           <div id="root"></div>
