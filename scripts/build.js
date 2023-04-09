@@ -119,19 +119,21 @@ async function buildForClient() {
           </head>
           <body>
           <div class="desc">
-          <h1>Render Client Components in Server Components - Ep3 of <a href="https://github.com/JSerZANP/demystify-react-server-components">Demystify React Server Components</a></h1>
-          <div>We couldn't move PostList to server as we did in ep2 because it renders <Link/> and <Link/> needs DOM api which means it must be a Client Component.<br>
-          In this episode, we do following to address this issue
+          <h1>Automatically build Server Components - Ep4 of <a href="https://github.com/JSerZANP/demystify-react-server-components">Demystify React Server Components</a></h1>
+          <div>In <a href="https://github.com/JSerZANP/demystify-react-server-components/pull/3">ep3</a> we see how tedious it is to manually manage the client part of server component.<br>
+          After doing two components, we can see that the client part of server components are basically the same, it is just a loader component that communicates with /render.<br>
+So we modify the build scripts to do this for us so that
+
+
+
 
           <ol>
-          <li>when rendering Server Component, we replace Client Components with "LazyContainer"  </li>
-          <li>"LazyContainer" will be replaced with working client component -LazyContainer on client</li>
-          <li>LazyContainer lazy loads the actual component (Link in our case) and renders</li>
+          <li>default components are Server Components, unless "use client" is declared  </li>
+          <li>no more naming of .server.js or .client.js. Now after building, client code use /public, server uses /built, components have the same name across the folders.</li>
           </ol>
 
-          With this we are able to move PostList to a Server Component, Hooray! Check the app below to see the lazily loaded js resources.
+          Here is the new app, we can see it works totally the same as before but the code is much cleaner with out importing '.client' or '.server'
           
-          <p>But it is even more tedious now, how can we make it less painful?</p>
           </div>
           <div id="root"></div>
             ${scripts}
